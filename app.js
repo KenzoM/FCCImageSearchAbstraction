@@ -3,6 +3,9 @@ var app = express();
 var bodyParser = require('body-parser');
 var path = require('path')
 var port = 3000;
+var dotenv = require('dotenv').config();
+
+var api = process.env.API_PASS
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
@@ -12,6 +15,7 @@ app.get('/',function(req,res){
   res.sendFile(path.join(__dirname, 'views/index.html'));
 })
 
+
 app.listen(port,function(){
-  console.log('listening port',port)
+  console.log('listening port',port);
 })

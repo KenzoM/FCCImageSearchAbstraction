@@ -1,5 +1,8 @@
 $("#search-btn").click(function(){
-  console.log('this is search button')
+  var search = $("#search").val();
+  var count = $("#count").val();
+  var offset = $("#offset").val();
+  console.log(search,count,offset)
 })
 
 
