@@ -1,8 +1,17 @@
-$("#search-btn").click(function(){
+$("#search-btn").click(function(e){
+  e.preventDefault();
   var search = $("#search").val();
   var count = $("#count").val();
   var offset = $("#offset").val();
-  console.log(search,count,offset)
+  $.ajax({
+    url: '/api/imagesearch',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {query: search, count: count, offset: offset}, //data sending out to server is in JSON
+    success: function(data){
+      console.log(data)
+    }
+  });
 })
 
 

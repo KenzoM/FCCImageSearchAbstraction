@@ -24,6 +24,7 @@
     "gulp": "^3.9.1",
     "gulp-sass": "^2.3.2",
     "mongoose": "^4.5.8",
-    "nodemon": "^1.10.0"
+    "nodemon": "^1.10.0",
+    "require": "^2.4.20"
   }
 }
