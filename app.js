@@ -59,6 +59,17 @@ app.post('/api/imagesearch', function(req,res){
     }
   }
   getImage(req.body)
+  var newLatest = new Latest();
+  newLatest.term = req.body.query;
+  newLatest.when = new Date();
+
+  newLatest.save(function(err, data){
+    if (err) throw console.error(err);
+    else{
+      console.log(data)
+    }
+  })
+
 })
 
 //stores all the results file from the search query
@@ -73,7 +84,13 @@ app.get('/api/imageresult', function(req, res){
 })
 
 app.get('/api/historysearch', function(req, res){
-
+  Latest.find({})
+    .exec(function(err, data){
+      if (err) throw console.error(err);
+      else{
+        res.json(data)
+      }
+    })
 })
 
 
