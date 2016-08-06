@@ -22,6 +22,7 @@ app.get('/',function(req,res){
 })
 
 app.post('/api/imagesearch', function(req,res){
+
   function getImage(requestUser){
     var options = {
       url: 'https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=' +
@@ -31,7 +32,7 @@ app.post('/api/imagesearch', function(req,res){
         'Ocp-Apim-Subscription-Key': api
       }
     };
-    return request(options, callback);
+    request(options, callback);
   }
 
   function callback(error, response, body) {
@@ -52,17 +53,23 @@ app.post('/api/imagesearch', function(req,res){
       newResult.save(function(err,data){
         if (err) throw console.error(err);
         else{
-          console.log(data);
+          res.send({link:'localhost:3000/api/imageresult'})
         }
       })
     }
   }
   getImage(req.body)
-
 })
 
+//stores all the results file from the search query
 app.get('/api/imageresult', function(req, res){
-
+  Result.find({})
+    .exec(function(err, data){
+      if (err) throw console.error(err);
+      else{
+        res.json(data)
+      }
+    })
 })
 
 app.get('/api/historysearch', function(req, res){
