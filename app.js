@@ -6,10 +6,12 @@ var port = 3000;
 var dotenv = require('dotenv').config();
 var api = process.env.API_PASS
 var request = require('request');
-var answer = ""
+var mongoose = require('mongoose')
+var Result = require('./models/Result.model');
+var Latest = require('./models/Latest.model')
+var db = 'mongodb://localhost/imageapi'
 
-
-
+mongoose.connect(db)
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
@@ -39,14 +41,31 @@ app.post('/api/imagesearch', function(req,res){
     }
   }
 
-  function storeData(stuff){
-    res.send({stuff})
+  function storeData(imageResults){
+    //lets save the results and the search history query in database
+    for(var i = 0; i < imageResults.length; i++){
+      var newResult = new Result();
+      newResult.contentUrl = imageResults[i].contentUrl;
+      newResult.altText = imageResults[i].name;
+      newResult.pageUrl = imageResults[i].hostPageUrl;
+
+      newResult.save(function(err,data){
+        if (err) throw console.error(err);
+        else{
+          console.log(data);
+        }
+      })
+    }
   }
   getImage(req.body)
 
 })
 
 app.get('/api/imageresult', function(req, res){
+
+})
+
+app.get('/api/historysearch', function(req, res){
 
 })
 
