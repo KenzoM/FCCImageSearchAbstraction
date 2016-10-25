@@ -9,7 +9,7 @@ var request = require('request');
 var mongoose = require('mongoose');
 var Result = require('./models/Result.model');
 var Latest = require('./models/Latest.model');
-var db = "mongodb://heroku_dj37ccxg:mplttq9f2kgc243tqotrp8m9eh@ds031617.mlab.com:31617/heroku_dj37ccxg"
+var db = process.env.DB;
 
 mongoose.connect(db);
 
