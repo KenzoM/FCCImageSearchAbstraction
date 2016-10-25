@@ -17,6 +17,19 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-12">
+          <h2>Directions</h2>
+          <blockquote>
+            <ol>
+              <li>Enter a keyword in the <u>Search</u> field for <code>image URLs</code>, <code>alt text</code> and <code>page Urls</code> in JSON Style</li>
+              <li><u>Count</u> field determines how many elements to extract that matches the keyword </li>
+              <li><u>Paginate</u> field allows to paginate/offset the search results</li>
+              <li> After filling out press <button type="button" class="btn btn-primary">Search Image</button> to see the results. Click the link to see in JSON </li>
+              <li> To see pasts seach history, press <button type="button" class="btn btn-info">Recent Research</button> and click the link</li>
+            </ol>
+          <p>Powered by Bing's API Image Search</p>
+          </blockquote>
+        </div>
+        <div class="col-sm-12">
           <p>Search: <input id="search" type="text">
           </p>
         </div>
@@ -25,7 +38,7 @@
           </p>
         </div>
         <div class="col-sm-12">
-          <p>Offset: <input id="offset" type="text">
+          <p>Paginate: <input id="offset" type="text">
           </p>
         </div>
       </div>
@@ -35,13 +48,20 @@
         <button id="search-btn" type="button" class="btn btn-primary">Search Image</button>
       </div>
       <div class="col-md-2">
-        <button id="history-btn" type="button" class="btn btn-primary">Recent Research</button>
+        <button id="history-btn" type="button" class="btn btn-info">Recent Research</button>
       </div>
     </class>
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <div id="hyperlink"></div>
+      <div id="hyperlink"><h4>Fill out all the form</h4></div>
+    </div>
+    <div class="col-sm-12">
+      <hr>
+      <h3>Github & Homepage</h3>
+      <a href="https://neotriz.github.io/">Portfolio Page</a>
+      <br>
+      <a href="https://github.com/Neotriz/FCCImageSearchAbstraction">Source Code</a>
     </div>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>

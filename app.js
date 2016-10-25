@@ -2,9 +2,9 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var path = require('path');
-var port = 3000;
+var port = process.env.PORT || 3000;
 var dotenv = require('dotenv').config();
-var api = process.env.API_PASS
+var api = process.env.API_PASS;
 var request = require('request');
 var mongoose = require('mongoose');
 var Result = require('./models/Result.model');
@@ -12,7 +12,7 @@ var Latest = require('./models/Latest.model');
 var config = require('./config');
 var db = 'mongodb://localhost/imageapi'; //database in imageapi
 
-mongoose.connect(db)
+mongoose.connect(db);
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
@@ -39,7 +39,7 @@ app.post('/api/imagesearch', function(req,res){
   function callback(error, response, body) {
     if (!error && response.statusCode == 200) {
       var info = JSON.parse(body);
-      storeData(info.value)
+      storeData(info.value);
     }
   }
   function storeData(imageResults){
@@ -60,35 +60,32 @@ app.post('/api/imagesearch', function(req,res){
     newLatest.date = new Date();
     newLatest.save(function(err, data){
       if (err) throw console.error(err);
-      else{
-        // res.send({link: config.webhost + '/api/imageresult' })
-      }
     })
   }
   //remove all exisiting image results
   Result.remove({}, function(err){
-    console.log(err)
+    if (err) throw console.error(err);
   })
   //lets call Bing's Image Search API
-  getImage(req.body)
+  getImage(req.body);
   //after we saved the results, lets save the query into Latest collection
-  addLatest(req.body.query)
+  addLatest(req.body.query);
   res.send({link: config.webhost + '/api/imageresult' })
 })
 
 //stores all the results file from the search query
 app.get('/api/imageresult', function(req, res){
-  Result.find({})
+  Result.find({},{_id:0})
     .exec(function(err, data){
       if (err) throw console.error(err);
       else{
-        res.json(data)
+        res.json(data);
       }
     })
 })
 
 app.get('/api/gethistory',function(req, res){
-  res.send({link: config.webhost + '/api/historysearch'})
+  res.send({link: config.webhost + '/api/historysearch'});
 })
 
 //stores all the history it was searched in database
@@ -97,7 +94,7 @@ app.get('/api/historysearch', function(req, res){
     .exec(function(err, data){
       if (err) throw console.error(err);
       else{
-        res.json(data)
+        res.json(data);
       }
     })
 })
