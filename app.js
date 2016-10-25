@@ -1,15 +1,16 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-var path = require('path')
+var path = require('path');
 var port = 3000;
 var dotenv = require('dotenv').config();
 var api = process.env.API_PASS
 var request = require('request');
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
 var Result = require('./models/Result.model');
 var Latest = require('./models/Latest.model')
-var db = 'mongodb://localhost/imageapi'
+var config = require('./config');
+var db = 'mongodb://localhost/imageapi'; //database in imageapi
 
 mongoose.connect(db)
 
@@ -21,8 +22,9 @@ app.get('/',function(req,res){
   res.sendFile(path.join(__dirname, 'views/index.html'));
 })
 
+//when user press search-btn, it will call Bing's api and save the query
+//in the latest collection as history
 app.post('/api/imagesearch', function(req,res){
-
   function getImage(requestUser){
     var options = {
       url: 'https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=' +
@@ -34,42 +36,44 @@ app.post('/api/imagesearch', function(req,res){
     };
     request(options, callback);
   }
-
   function callback(error, response, body) {
     if (!error && response.statusCode == 200) {
       var info = JSON.parse(body);
       storeData(info.value)
     }
   }
-
   function storeData(imageResults){
-    //lets save the results and the search history query in database
+    //lets save the results from Bing's API Image Search API
     for(var i = 0; i < imageResults.length; i++){
       var newResult = new Result();
       newResult.contentUrl = imageResults[i].contentUrl;
       newResult.altText = imageResults[i].name;
       newResult.pageUrl = imageResults[i].hostPageUrl;
-
       newResult.save(function(err,data){
         if (err) throw console.error(err);
-        else{
-          res.send({link:'localhost:3000/api/imageresult'})
-        }
       })
     }
   }
-  getImage(req.body)
-  var newLatest = new Latest();
-  newLatest.term = req.body.query;
-  newLatest.when = new Date();
-
-  newLatest.save(function(err, data){
-    if (err) throw console.error(err);
-    else{
-      console.log(data)
-    }
+  function addLatest(userQuery){
+    var newLatest = new Latest();
+    newLatest.term = req.body.query;
+    newLatest.when = new Date();
+    newLatest.save(function(err, data){
+      if (err) throw console.error(err);
+      else{
+        // res.send({link: config.webhost + '/api/imageresult' })
+      }
+    })
+  }
+  //remove all exisiting image results
+  Result.remove({}, function(err){
+    console.log(err)
   })
-
+  //lets call Bing's Image Search API
+  getImage(req.body)
+  //after we saved the results, lets save the query into Latest collection
+  addLatest(req.body.query)
+  res.send({link: config.webhost + '/api/imageresult' })
 })
 
 //stores all the results file from the search query
@@ -83,6 +87,11 @@ app.get('/api/imageresult', function(req, res){
     })
 })
 
+app.get('/api/gethistory',function(req, res){
+  res.send({link: config.webhost + '/api/historysearch'})
+})
+
+//stores all the history it was searched in database
 app.get('/api/historysearch', function(req, res){
   Latest.find({})
     .exec(function(err, data){
@@ -92,7 +101,6 @@ app.get('/api/historysearch', function(req, res){
       }
     })
 })
-
 
 app.listen(port,function(){
   console.log('listening port',port);

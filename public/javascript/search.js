@@ -9,9 +9,9 @@ $("#search-btn").click(function(e){
     dataType: 'JSON',
     beforeSend: function(){
       if(!Number.isInteger(Number(count)) || !Number.isInteger(Number(offset)) ){
-        console.log(Number.isInteger(Number(count)))
-        alert('Make sure Count and Offset Parameters are numbers!')
-        return false
+        console.log(Number.isInteger(Number(count)));
+        alert('Make sure Count and Offset Parameters are numbers!');
+        return false;
       }
       if(search === null || count === null || count === offset){
         alert('Make sure none are empty!');
