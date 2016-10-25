@@ -8,7 +8,7 @@ var api = process.env.API_PASS
 var request = require('request');
 var mongoose = require('mongoose');
 var Result = require('./models/Result.model');
-var Latest = require('./models/Latest.model')
+var Latest = require('./models/Latest.model');
 var config = require('./config');
 var db = 'mongodb://localhost/imageapi'; //database in imageapi
 
@@ -57,7 +57,7 @@ app.post('/api/imagesearch', function(req,res){
   function addLatest(userQuery){
     var newLatest = new Latest();
     newLatest.term = req.body.query;
-    newLatest.when = new Date();
+    newLatest.date = new Date();
     newLatest.save(function(err, data){
       if (err) throw console.error(err);
       else{
@@ -93,7 +93,7 @@ app.get('/api/gethistory',function(req, res){
 
 //stores all the history it was searched in database
 app.get('/api/historysearch', function(req, res){
-  Latest.find({})
+  Latest.find({},{_id:0}).sort({date: -1})
     .exec(function(err, data){
       if (err) throw console.error(err);
       else{
