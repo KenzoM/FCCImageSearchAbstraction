@@ -50,7 +50,6 @@ app.post('/api/imagesearch', function(req,res){
       newResult.pageUrl = imageResults[i].hostPageUrl;
       newResult.save(function(err,data){
         if (err) throw console.error(err);
-        console.log(data)
       })
     }
   }
@@ -78,7 +77,6 @@ app.get('/api/imageresult', function(req, res){
   Result.find({},{_id:0})
     .exec(function(err, data){
       if (err) throw console.error(err);
-      // console.log(data)
       res.json(data);
     })
 })
