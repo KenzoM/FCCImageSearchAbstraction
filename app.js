@@ -64,12 +64,12 @@ app.post('/api/imagesearch', function(req,res){
   //remove all exisiting image results
   Result.remove({}, function(err){
     if (err) throw console.error(err);
+    //lets call Bing's Image Search API
+    getImage(req.body);
+    //after we saved the results, lets save the query into Latest collection
+    addLatest(req.body.query);
+    res.send({link: 'api/imageresult' })
   })
-  //lets call Bing's Image Search API
-  getImage(req.body);
-  //after we saved the results, lets save the query into Latest collection
-  addLatest(req.body.query);
-  res.send({link: 'api/imageresult' })
 })
 
 //stores all the results file from the search query
