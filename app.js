@@ -9,8 +9,7 @@ var request = require('request');
 var mongoose = require('mongoose');
 var Result = require('./models/Result.model');
 var Latest = require('./models/Latest.model');
-var config = require('./config');
-var db = 'mongodb://localhost/imageapi'; //database in imageapi
+var db = "mongodb://heroku_dj37ccxg:mplttq9f2kgc243tqotrp8m9eh@ds031617.mlab.com:31617/heroku_dj37ccxg"
 
 mongoose.connect(db);
 
@@ -70,7 +69,7 @@ app.post('/api/imagesearch', function(req,res){
   getImage(req.body);
   //after we saved the results, lets save the query into Latest collection
   addLatest(req.body.query);
-  res.send({link: config.webhost + '/api/imageresult' })
+  res.send({link: 'api/imageresult' })
 })
 
 //stores all the results file from the search query
@@ -85,7 +84,7 @@ app.get('/api/imageresult', function(req, res){
 })
 
 app.get('/api/gethistory',function(req, res){
-  res.send({link: config.webhost + '/api/historysearch'});
+  res.send({link: 'api/historysearch'});
 })
 
 //stores all the history it was searched in database

@@ -1,4 +1,5 @@
 "use strict"
+var pathname = window.location.href;
 $("#search-btn").click(function(e){
   e.preventDefault();
   var search = $("#search").val();
@@ -28,7 +29,7 @@ $("#search-btn").click(function(e){
     data: {query: search, count: count, offset: offset}, //data sending out to server is in JSON
     success: function(data){
       $("#hyperlink").empty();
-      $("#hyperlink").append("<h4><a href="+ data.link +">"+ data.link +"</a></h4>");
+      $("#hyperlink").append("<h4><a href="+ data.link +">"+ pathname + data.link +"</a></h4>");
     }
   });
 })
@@ -39,7 +40,7 @@ $("#history-btn").click(function(){
     type: "GET",
     success: function(data){
       $("#hyperlink").empty();
-      $("#hyperlink").append("<h4><a href="+ data.link +">"+ data.link +"</a></h4>")
+      $("#hyperlink").append("<h4><a href="+ data.link +">"+ pathname + data.link +"</a></h4>")
     }
   })
 })
